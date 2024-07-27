@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>SENTIMENT ANALYSIS ON TELUGU SONGS</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+  .button-container {
+    text-align: center; /* Centers the button horizontally */
+    margin-bottom: 20px;   /* Adds space between button and form */
+  }
+  .emoji-box {
+  display: inline-block; /* Display each box in a line */
+  margin-right: 10px; /* Add spacing between boxes */
+  border: 1px solid #ccc; /* Add border to each box */
+  padding: 5px; /* Add padding inside each box */
+  text-align: center; /* Center content horizontally */
+}
+
+.emoji {
+  width: 50px; /* Set width of the emoji */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Ensure each emoji is displayed as a block */
+  margin: 0 auto 5px; /* Center emoji vertically within box */
+}
+</style>
+  
+</head>
+
+<body>
+ <div class="login">
+	<h1>SENTIMENT ANALYSIS ON TELUGU SONGS</h1>
+
+  <div class="button-container">
+    <button type="button" class="btn btn-primary" id="myButton" >BUILD MODELS</button>
+  </div>
+  
+  <div id="model_status">{{ build_output }}</div>
+  <br>
+
+  <script>
+    document.getElementById('myButton').addEventListener('click', function() {
+        fetch('/button_clicked', { 
+        method: 'POST'   // Explicitly specify POST method
+      })  
+      .then(response => response.text())
+      .then(data => {
+      document.getElementById('model_status').textContent = data; 
+      })
+      .catch(error => console.error('Error:', error));})
+  </script>
+  
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+    	<input type="text" name="experience" placeholder="Telugu Text" required="required" />
+
+        <button type="submit" class="btn btn-primary btn-block btn-large">PREDICT</button>
+    </form>
+    <br>
+    
+    <br>
+    <!-- Display emojis based on prediction -->
+    <div>
+      {% if prediction_text %}
+        {% for sentiment, emoji in prediction_text.items() %}
+          <div class="emoji-box">
+            <img src="{{ url_for('static', filename='emojis/' + emoji + '.png') }}" class="emoji" alt="{{ sentiment }}">
+            <span>{{ sentiment }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <br>
+    
+  
+
+ </div>
+ <div class="instructor">
+  <h4>INSTRUCTOR: DR. ARNAB BHATTACHARYA</h4>
+ </div>
+
+  <img src="https://www2.cse.iitk.ac.in/~iwml/2016/images/iitk.png" class="logo"/>
+
+
+</body>
+</html>
