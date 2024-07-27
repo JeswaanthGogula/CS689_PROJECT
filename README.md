@@ -1,6 +1,8 @@
 # CS689_PROJECT
 Project done for the course "Computational Linguistics for Indian Languages"
 
+Unzip Data and then starting running the project.
+
 Running MAKEFILE.ipynb : 
 
 - Download the indicFt model for telugu using the below link and store that file in the main folder.
